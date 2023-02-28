@@ -46,7 +46,7 @@ router.post('/signup', function(req,res){
   const {id, password} = req.body;
   console.log(req.body);
 
-  const signupQuery = `INSERT INTO user (user_id, id, password, info) VALUES (1, ${id}, ${password}, 1)`;
+  const signupQuery = `INSERT INTO user (user_id, id, password, info) VALUES (1, '${id}', '${password}', 1)`;
 
   queryDatabase(signupQuery).then(results => {
     console.log(results);
