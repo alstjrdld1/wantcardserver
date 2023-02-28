@@ -9,3 +9,6 @@ It was written in Node.js
 -- npm init 
 
 -- npm run 
+
+# Update Log 
+ | 2023.02.28 | Solved the error when injecting string data into SQL.
