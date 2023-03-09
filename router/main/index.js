@@ -4,7 +4,6 @@ var router = express.Router(); // router라는 함수가 있음
 var path = require('path'); // path라는 모듈 써서 상대경로를 알아낼 수 있음
 
 router.get('/', function(req,res){
-
   res.send('main.js');
 });
 

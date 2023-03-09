@@ -3,8 +3,9 @@ var app = express();
 var router = express.Router();
 var path = require('path');
 
-var main = require('./main/index');
-var join = require('./join/index');
+let main = require('./main/index');
+let join = require('./join/index');
+let card = require('./card/index');
 
 router.get('/', function(req,res){
   console.log('indexjs/path loaded');
@@ -13,5 +14,6 @@ router.get('/', function(req,res){
 
 router.use('/main', main);
 router.use('/join', join);
+router.use('/card', card);
 
 module.exports = router;
