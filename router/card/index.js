@@ -8,11 +8,25 @@ const db = require('../../utils/db.js'); // Database module is can be imported l
 
 router.get('/', function(req, res){
   console.log("Request on /card");
-  res.send("card/indx.js");
+  res.send("card/index.js");
 });
 
-router.post('/', function(req,res){
-  console.log(req.body);
+router.post('/', function(req, res){
+  console.log("Post request /card");
+
+  const uid = req.body.uid;
+  const getCardQuery = `SELECT card_file_name, card_nickname from user_card_info WHERE uid=${uid}`;
+
+  db.queryDatabase(getCardQuery)
+  .then(results => {
+    console.log(results);
+    res.status(200).json(results);
+    console.log("DB read and send data success");
+
+  }).catch(error => {
+    res.status(500).send("Internal Error");
+  });
+
 });
 
 

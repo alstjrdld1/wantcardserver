@@ -22,10 +22,11 @@ router.post('/signup', function(req,res){
   console.log(req.body);
 
   const signupQuery = `INSERT INTO user (user_id, id, password, info) VALUES (1, '${id}', '${password}', 1)`;
-
-  db.queryDatabase(signupQuery).then(results => {
+  db.queryDatabase(signupQuery)
+  .then(results => {
+    console.log("################## Results");
     console.log(results);
-    res.status(200).send('New record added successfully');
+    res.status(200).json({uid: 1});
   }).catch(error => {
     console.log("Error");
     console.log(error);
