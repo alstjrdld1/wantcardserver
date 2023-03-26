@@ -14,13 +14,15 @@ router.get('/', function(req, res){
 router.post('/', function(req, res){
   console.log("Post request /card");
 
-  const uid = req.body.uid;
+  const uid = req.body.uid; // parse uid from request
+
+  // query setting database is user_card_info
   const getCardQuery = `SELECT card_file_name, card_nickname from user_card_info WHERE uid=${uid}`;
 
-  db.queryDatabase(getCardQuery)
+  db.queryDatabase(getCardQuery) // query shooting 
   .then(results => {
     console.log(results);
-    res.status(200).json(results);
+    res.status(200).json(results); // Data type casting into json format 
     console.log("DB read and send data success");
 
   }).catch(error => {

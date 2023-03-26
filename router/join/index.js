@@ -15,24 +15,50 @@ router.post('/', function(req,res){
   console.log(req.body);
 });
 
+// 회원가입 
 router.post('/signup', function(req,res){
   console.log("/join/signup");
   
   const {id, password} = req.body;
   console.log(req.body);
 
-  const signupQuery = `INSERT INTO user (user_id, id, password, info) VALUES (1, '${id}', '${password}', 1)`;
+  const signupQuery = `INSERT IGNORE INTO user (id, password) VALUES ('${id}', '${password}')`;
+
   db.queryDatabase(signupQuery)
   .then(results => {
     console.log("################## Results");
     console.log(results);
-    res.status(200).json({uid: 1});
+
+    // 회원가입 하고 uid얻는 코드 
+    const resultSetHeader = results;
+
+    console.log('Affected rows:', resultSetHeader.affectedRows);
+    console.log('Insert ID:', resultSetHeader.insertId);
+    
+    res.status(200).json({uid: resultSetHeader.insertId});
   }).catch(error => {
     console.log("Error");
     console.log(error);
     res.status(500).send('Error adding new record');
   });
+});
 
+// 로그인
+router.post('/login', function(req,res){
+  console.log("/join/login");
+  const {id, password} = req.body;
+  // 로그인 하고 uid 얻는 코드 
+  const getUidQuery = `SELECT user_id FROM user WHERE id='${id}' AND password='${password}'`;
+  db.queryDatabase(getUidQuery)
+  .then(result => {
+    console.log(result[0].user_id);
+    res.status(200).json({uid: result[0].user_id});
+  })
+  .catch(error => {
+    console.log("Error");
+    console.log(error);
+    res.status(500).send('Error adding new record');
+  });
 });
 
 module.exports = router; // 이렇게 export되어서 다른 곳에서 쓸 수 있음
