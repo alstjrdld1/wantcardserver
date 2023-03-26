@@ -47,8 +47,10 @@ router.post('/signup', function(req,res){
 router.post('/login', function(req,res){
   console.log("/join/login");
   const {id, password} = req.body;
+
   // 로그인 하고 uid 얻는 코드 
   const getUidQuery = `SELECT user_id FROM user WHERE id='${id}' AND password='${password}'`;
+
   db.queryDatabase(getUidQuery)
   .then(result => {
     console.log(result[0].user_id);
@@ -57,7 +59,29 @@ router.post('/login', function(req,res){
   .catch(error => {
     console.log("Error");
     console.log(error);
-    res.status(500).send('Error adding new record');
+    res.status(500).send('Error Getting user_id');
+  });
+});
+
+router.post('/checkId', function(req, res){
+  console.log("/join/checkId");
+
+  const {id} = req.body;
+
+  const checkIdQuery = `SELECT id FROM user WHERE id='${id}'`;
+  db.queryDatabase(checkIdQuery)
+  .then(result =>{
+    if(result.lenght === 0){
+      res.status(200).json({data: null, message: "사용가능한 아이디입니다"});
+    }
+    else{
+      res.status(200).json( {data: result, message: "이미 사용중인 아이디입니다"});
+    }
+  })
+  .catch(error => {
+    console.log("Error");
+    console.log(error);
+    res.status(500).send('Error getting duplicate check');
   });
 });
 
