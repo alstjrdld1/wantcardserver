@@ -71,7 +71,7 @@ router.post('/checkId', function(req, res){
   const checkIdQuery = `SELECT id FROM user WHERE id='${id}'`;
   db.queryDatabase(checkIdQuery)
   .then(result =>{
-    if(result.lenght === 0){
+    if(result.length === 0){
       res.status(200).json({data: null, message: "사용가능한 아이디입니다"});
     }
     else{
