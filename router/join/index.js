@@ -4,7 +4,9 @@ const router = express.Router();
 const path = require('path');
 
 const bodyParser = require('body-parser'); // bodyparser 불러오는거 이제 express 서버한테 바디파서 쓴다고 말해야함
+
 const db = require('../../utils/db.js');
+const myUtil = require('../../utils/security.js');
 
 router.get('/', function(req, res){
   console.log("Request on /join");
@@ -19,10 +21,13 @@ router.post('/', function(req,res){
 router.post('/signup', function(req,res){
   console.log("/join/signup");
   
-  const {id, password} = req.body;
+  const {id, password, name, phone_number, email} = req.body;
   console.log(req.body);
+  
+  const hashedPW = myUtil.myHash(password);
+  console.log(hashedPW);
 
-  const signupQuery = `INSERT IGNORE INTO user (id, password) VALUES ('${id}', '${password}')`;
+  const signupQuery = `INSERT IGNORE INTO user (id, password, name, phone_number, email) VALUES ('${id}', '${hashedPW}', '${name}' , '${phone_number}', '${email}')`;
 
   db.queryDatabase(signupQuery)
   .then(results => {
@@ -49,7 +54,8 @@ router.post('/login', function(req,res){
   const {id, password} = req.body;
 
   // 로그인 하고 uid 얻는 코드 
-  const getUidQuery = `SELECT user_id FROM user WHERE id='${id}' AND password='${password}'`;
+  const hashedPW = myUtil.myHash(password);
+  const getUidQuery = `SELECT user_id FROM user WHERE id='${id}' AND password='${hashedPW}'`;
 
   db.queryDatabase(getUidQuery)
   .then(result => {
